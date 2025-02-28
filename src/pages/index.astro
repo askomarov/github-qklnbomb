@@ -1,17 +1,17 @@
 ---
 export const prerender = false;
 import FormSubmit from '../components/FormSubmit.astro';
-import { isInputError } from "astro:actions";
-import { actions } from "astro:actions";
+// import { isInputError } from "astro:actions";
+// import { actions } from "astro:actions";
 
-const result = Astro.getActionResult(actions.signup);
+// const result = Astro.getActionResult(actions.signup);
 
-if (result?.data) {
-  console.log(result.data);
-  // return Astro.redirect("/");
-}
+// if (result?.data) {
+//   console.log(result.data);
+//   // return Astro.redirect("/");
+// }
 
-const inputErrors = isInputError(result?.error) ? result.error.fields : {};
+// const inputErrors = isInputError(result?.error) ? result.error.fields : {};
 ---
 
 <html lang="en">
@@ -24,8 +24,8 @@ const inputErrors = isInputError(result?.error) ? result.error.fields : {};
 	</head>
 	<body>
 		<h1>Astro</h1>
-		<FormSubmit />
-		   <form action={actions.signup} method="post">
+		<FormSubmit server:defer />
+		   <!-- <form action={actions.signup} method="post">
         {
           result?.error && Object.keys(inputErrors).length === 0 && (
             <p>There was a problem submitting the form.</p>
@@ -58,6 +58,6 @@ const inputErrors = isInputError(result?.error) ? result.error.fields : {};
         />
         {inputErrors.email && <p id="email-error">{inputErrors.email[0]}</p>}
         <button class="btn">Submit</button>
-      </form>
+      </form> -->
 	</body>
 </html>
