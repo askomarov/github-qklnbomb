@@ -1,0 +1,63 @@
+---
+export const prerender = false;
+import FormSubmit from '../components/FormSubmit.astro';
+import { isInputError } from "astro:actions";
+import { actions } from "astro:actions";
+
+const result = Astro.getActionResult(actions.signup);
+
+if (result?.data) {
+  console.log(result.data);
+  // return Astro.redirect("/");
+}
+
+const inputErrors = isInputError(result?.error) ? result.error.fields : {};
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<h1>Astro</h1>
+		<FormSubmit />
+		   <form action={actions.signup} method="post">
+        {
+          result?.error && Object.keys(inputErrors).length === 0 && (
+            <p>There was a problem submitting the form.</p>
+          )
+        }
+        <input
+          type="text"
+          name="firstName"
+          placeholder="First name"
+          autocomplete="off"
+          value="Chris"
+          data-error={inputErrors.firstName}
+          aria-describedby={inputErrors.firstName
+            ? "username-error"
+            : undefined}
+        />
+        {
+          inputErrors.firstName && (
+            <p id="username-error">{inputErrors.firstName[0]}</p>
+          )
+        }
+        <input
+          type="email"
+          name="email"
+          placeholder="Email address"
+          autocomplete="off"
+          value="email@email.com"
+          data-error={inputErrors.email}
+          aria-describedby={inputErrors.email ? "email-error" : undefined}
+        />
+        {inputErrors.email && <p id="email-error">{inputErrors.email[0]}</p>}
+        <button class="btn">Submit</button>
+      </form>
+	</body>
+</html>
